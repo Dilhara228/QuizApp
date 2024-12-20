@@ -185,5 +185,5 @@ final List<Map<String, String>> _languages = [
   {'name': 'CSS', 'image': 'assets/images/css.png'},
   {'name': 'PHP', 'image': 'assets/images/php.png'},
   {'name': 'Kotlin', 'image': 'assets/images/kotlin.png'},
-  {'name': 'SQL Server', 'image': 'assets/images/sql.png'},
+  {'name': 'SQL', 'image': 'assets/images/sql.png'},
 ];
