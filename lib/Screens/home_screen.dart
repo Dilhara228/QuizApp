@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:programming_quiz/Models/quiz_data.dart';
 import 'package:programming_quiz/Screens/quiz_screen.dart';
+import 'package:programming_quiz/Screens/select_language_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,6 +75,14 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.black87,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
+          if(index == 1){
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SelectLanguageScreen()
+              ),
+            );
+          }
           setState(() {
             _currentIndex = index;
           });
