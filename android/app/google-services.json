@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "273864062896",
+    "project_id": "programming-quiz-722de",
+    "storage_bucket": "programming-quiz-722de.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273864062896:android:9ccb4d410817c3a25c4875",
+        "android_client_info": {
+          "package_name": "com.example.programming_quiz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9YMDAld9U9IxPQIcKK4-uSfPmNwAa6zk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

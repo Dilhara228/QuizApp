@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:programming_quiz/Models/quiz_data.dart';
+import 'package:programming_quiz/Screens/Bookmark_Screen.dart';
+import 'package:programming_quiz/Screens/articles_overview_screen.dart';
 import 'package:programming_quiz/Screens/quiz_screen.dart';
+import 'package:programming_quiz/Screens/select_language_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -74,9 +77,25 @@ class _HomeScreenState extends State<HomeScreen> {
         unselectedItemColor: Colors.black87,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
+          if (index == 1) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    SelectLanguageScreen(), // Replace with your ArticlesOverviewScreen widget
+              ),
+            );
+          }
+          if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookmarkScreen()),
+            );
+          } else {
+            setState(() {
+              _currentIndex = index;
+            });
+          }
         },
         items: const [
           BottomNavigationBarItem(
