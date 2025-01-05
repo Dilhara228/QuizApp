@@ -1,3 +1,4 @@
+// results_screen.dart
 import 'package:flutter/material.dart';
 import 'package:programming_quiz/Models/quiz_data.dart';
 import 'package:programming_quiz/Screens/quiz_screen.dart';
@@ -23,11 +24,9 @@ class ResultsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFDCC00A),
         title: const Text(
           'Quiz Results',
           style: TextStyle(
-            color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -35,11 +34,13 @@ class ResultsScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFDCC00A), Color(0xFF96FF61)],
+            colors: Theme.of(context).brightness == Brightness.dark
+                ? [Colors.grey[850]!, Colors.grey[800]!]
+                : [const Color(0xFFDCC00A), const Color(0xFF96FF61)],
           ),
         ),
         child: SafeArea(
@@ -50,13 +51,15 @@ class ResultsScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black54
+                            : Colors.black26,
                         blurRadius: 5,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
@@ -103,8 +106,17 @@ class ResultsScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.black54
+                              : Colors.black26,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
                     child: ListView.builder(
                       itemCount: questionResults.length,
@@ -125,7 +137,8 @@ class ResultsScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Question ${index + 1}',
-                                style: const TextStyle(
+                                style: TextStyle(
+                                  color: Theme.of(context).textTheme.bodyMedium?.color, // Updated
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
@@ -151,18 +164,23 @@ class ResultsScreen extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: Theme.of(context).cardColor,
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          side: BorderSide(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Colors.black,
+                          ),
                         ),
                         onPressed: () {
                           Navigator.of(context).popUntil(
                             (route) => route.isFirst,
                           );
                         },
-                        child: const Text(
+                        child: Text(
                           'Back to Home',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Theme.of(context).textTheme.bodyMedium?.color, // Updated
                             fontSize: 16,
                           ),
                         ),
@@ -172,7 +190,7 @@ class ResultsScreen extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFDCC00A),
+                          backgroundColor: Theme.of(context).primaryColor,
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                         ),
                         onPressed: () {
@@ -191,7 +209,7 @@ class ResultsScreen extends StatelessWidget {
                         child: const Text(
                           'Try Again',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontSize: 16,
                           ),
                         ),

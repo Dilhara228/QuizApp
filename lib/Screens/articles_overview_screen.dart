@@ -1,8 +1,10 @@
+// articles_overview_screen.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../Models/article.dart';
 import '../Models/article_details.dart';
+import 'article_detail_screen.dart'; // Added missing import
 
 class ArticlesOverviewScreen extends StatefulWidget {
   final String language;
@@ -76,6 +78,10 @@ class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
             : 'Article removed from bookmarks!',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
+        backgroundColor: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[800]
+            : Colors.black87,
+        textColor: Colors.white,
       );
     } catch (e) {
       print('Error toggling bookmark: $e');
@@ -85,6 +91,7 @@ class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
       Fluttertoast.showToast(
         msg: 'Failed to update bookmark',
         backgroundColor: Colors.red,
+        textColor: Colors.white,
       );
     }
   }
@@ -116,11 +123,18 @@ class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
     return Card(
       margin: const EdgeInsets.all(8),
       child: ListTile(
-        title: Text(article.title),
+        title: Text(
+          article.title,
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color, // Updated
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         subtitle: Text(
           article.description,
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.bodyMedium, // Updated
         ),
         trailing: IconButton(
           icon: Icon(
@@ -129,10 +143,18 @@ class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
                 : Icons.bookmark_border,
             color: bookmarkedArticles[article.title] ?? false
                 ? Colors.yellow
-                : Colors.grey,
+                : Theme.of(context).iconTheme.color,
           ),
           onPressed: () => _toggleBookmark(article),
         ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ArticleDetailScreen(article: article),
+            ),
+          );
+        },
       ),
     );
   }

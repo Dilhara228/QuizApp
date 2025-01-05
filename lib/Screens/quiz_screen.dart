@@ -1,3 +1,4 @@
+// quiz_screen.dart
 import 'package:flutter/material.dart';
 import 'dart:async';
 import '../Models/question.dart';
@@ -107,22 +108,22 @@ class _QuizScreenState extends State<QuizScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFDCC00A),
         title: Text(
           '${widget.language} Quiz',
           style: const TextStyle(
-            color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFDCC00A), Color(0xFF96FF61)],
+            colors: Theme.of(context).brightness == Brightness.dark
+                ? [Colors.grey[850]!, Colors.grey[800]!]
+                : [const Color(0xFFDCC00A), const Color(0xFF96FF61)],
           ),
         ),
         child: SafeArea(
@@ -140,7 +141,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         vertical: 8.0,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
@@ -154,7 +155,8 @@ class _QuizScreenState extends State<QuizScreen> {
                     Container(
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color: secondsLeft <= 3 ? Colors.red : Colors.white,
+                        color:
+                            secondsLeft <= 3 ? Colors.red : Theme.of(context).cardColor,
                         shape: BoxShape.circle,
                       ),
                       child: Text(
@@ -162,7 +164,9 @@ class _QuizScreenState extends State<QuizScreen> {
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: secondsLeft <= 3 ? Colors.white : Colors.black,
+                          color: secondsLeft <= 3
+                              ? Colors.white
+                              : Theme.of(context).textTheme.bodyMedium?.color, // Updated
                         ),
                       ),
                     ),
@@ -174,13 +178,15 @@ class _QuizScreenState extends State<QuizScreen> {
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(12),
-                    boxShadow: const [
+                    boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.black54
+                            : Colors.black26,
                         blurRadius: 5,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),

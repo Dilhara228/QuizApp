@@ -41,7 +41,7 @@ dependencies:
   http: ^1.2.2
   fluttertoast: ^8.2.10
   firebase_database: ^11.2.0
-  url_launcher: ^6.1.1
+  provider: ^6.1.2
 
 
 dev_dependencies:
