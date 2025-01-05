@@ -26,39 +26,59 @@ class _SelectLanguageScreenState extends State<SelectLanguageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Programming Languages'),
+        title: const Text('Programming Languages',
+          style: TextStyle(
+          color: Colors.black,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: languages.length,
-          itemBuilder: (context, index) {
-            return Card(
-              margin: const EdgeInsets.symmetric(vertical: 8.0),
-              elevation: 4.0,
-              child: ListTile(
-                contentPadding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                leading: Image.asset(
-                  languages[index]['image'],
-                  width: 30.0,
-                  height: 30.0,
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFDCC00A),
+              Color(0xFF96FF61),
+            ],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView.builder(
+            itemCount: languages.length,
+            itemBuilder: (context, index) {
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                elevation: 4.0,
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                      vertical: 12.0, horizontal: 16.0),
+                  leading: Image.asset(
+                    languages[index]['image'],
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  title: Text(
+                    languages[index]['name'],
+                    style: const TextStyle(
+                        fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ArticlesOverviewScreen(
+                            language: languages[index]['name']),
+                      ),
+                    );
+                  },
                 ),
-                title: Text(
-                  languages[index]['name'],
-                  style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ArticlesOverviewScreen(language: languages[index]['name']),
-                    ),
-                  );
-                },
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

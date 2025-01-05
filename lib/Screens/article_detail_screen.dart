@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../Models/article.dart';
 
 
@@ -14,18 +13,28 @@ class ArticleDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Article Overview')),
+      appBar: AppBar(title: Text('Article Overview',
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+        ),
+      )
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(article.title, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              Image.asset(article.image),
               SizedBox(height: 16),
-              Text(article.description),
+              Text(article.title,
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              // SizedBox(height: 16),
+              // Text(article.description),
               SizedBox(height: 16),
-
+              Text(article.content),
               SizedBox(height: 32),
             ],
           ),
@@ -33,12 +42,6 @@ class ArticleDetailScreen extends StatelessWidget {
       ),
     );
   }
-
-  void launchUrl(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
 }
+
+

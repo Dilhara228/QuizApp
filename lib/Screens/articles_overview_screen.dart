@@ -14,29 +14,54 @@ class ArticlesOverviewScreen extends StatefulWidget {
 }
 
 class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
-
   Map<int, bool> bookmarkedArticles = {};
 
   @override
   Widget build(BuildContext context) {
-
-    final List<Article> articles = List<Article>.from(ArticleDetails.articlesByLanguage[widget.language] ?? [],);
+    final List<Article> articles = List<Article>.from(
+      ArticleDetails.articlesByLanguage[widget.language] ?? [],
+    );
 
     return Scaffold(
-      appBar: AppBar(title: Text('${widget.language} Articles')),
-      body: articles.isEmpty
-          ? const Center(child: Text('No articles available for this language.'))
-          : ListView.separated(
-        itemCount: articles.length,
-        separatorBuilder: (context, index) => const Divider(),
-        itemBuilder: (context, index) {
-          return _buildArticleCard(articles[index], index);
-        },
+      appBar: AppBar(
+        title: Text(
+          '${widget.language} Articles',
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFFDCC00A),
+              Color(0xFF96FF61),
+            ],
+          ),
+        ),
+        child: articles.isEmpty
+            ? const Center(
+          child: Text(
+            'No articles available for this language.',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+        )
+            : ListView.separated(
+          itemCount: articles.length,
+          separatorBuilder: (context, index) => const Divider(),
+          itemBuilder: (context, index) {
+            return _buildArticleCard(articles[index], index);
+          },
+        ),
       ),
     );
   }
 
-  // Extracted method for creating article list tile
   Widget _buildArticleCard(Article article, int index) {
     return Card(
       child: ListTile(
@@ -67,13 +92,11 @@ class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
     );
   }
 
-  // Method to toggle bookmark and show toast
   void _toggleBookmark(int index) {
     setState(() {
       bookmarkedArticles[index] = !(bookmarkedArticles[index] ?? false);
     });
 
-    // Show toast when an article is bookmarked or unbookmarked
     Fluttertoast.showToast(
       msg: bookmarkedArticles[index] == true
           ? 'Article added to favorites!'
@@ -87,6 +110,3 @@ class _ArticlesOverviewScreenState extends State<ArticlesOverviewScreen> {
     );
   }
 }
-
-
-
