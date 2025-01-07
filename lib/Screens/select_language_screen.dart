@@ -1,4 +1,3 @@
-// select_language_screen.dart
 import 'package:flutter/material.dart';
 import 'articles_overview_screen.dart';
 
@@ -92,20 +91,20 @@ class _SelectLanguageScreenState extends State<SelectLanguageScreen> {
             _currentIndex = index;
           });
         },
-        items: [
-          const BottomNavigationBarItem(
+        items: const [
+          BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.article),
             label: 'Articles',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
             label: 'Bookmarks',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.dark_mode),
             label: 'Dark Mode',
           ),

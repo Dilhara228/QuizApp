@@ -1,4 +1,3 @@
-// results_screen.dart
 import 'package:flutter/material.dart';
 import 'package:programming_quiz/Models/quiz_data.dart';
 import 'package:programming_quiz/Screens/quiz_screen.dart';

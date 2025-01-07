@@ -1,10 +1,8 @@
-// home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:programming_quiz/Directory/theme_notifier.dart';
-import 'package:provider/provider.dart'; // Added import
+import 'package:provider/provider.dart'; 
 import 'package:programming_quiz/Models/quiz_data.dart';
 import 'package:programming_quiz/Screens/Bookmark_Screen.dart';
-import 'package:programming_quiz/Screens/articles_overview_screen.dart';
 import 'package:programming_quiz/Screens/quiz_screen.dart';
 import 'package:programming_quiz/Screens/select_language_screen.dart';
 
@@ -100,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.dark_mode,
-              color: isDarkMode ? Colors.yellow : Colors.grey,
+              color: isDarkMode ? Colors.yellow : Colors.black,
             ),
             label: 'Dark Mode',
           ),

@@ -1,10 +1,9 @@
-// articles_overview_screen.dart
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../Models/article.dart';
 import '../Models/article_details.dart';
-import 'article_detail_screen.dart'; // Added missing import
+import 'article_detail_screen.dart'; 
 
 class ArticlesOverviewScreen extends StatefulWidget {
   final String language;

@@ -1,4 +1,3 @@
-// Bookmark_Screen.dart
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import '../Models/article.dart';
@@ -16,6 +15,8 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       FirebaseDatabase.instance.ref().child('bookmarks');
   List<Article> bookmarkedArticles = [];
   Map<String, String> articleKeys = {};
+  bool isLoading = true;
+  bool isOffline = false;
 
   @override
   void initState() {
@@ -25,6 +26,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
 
   Future<void> _loadBookmarkedArticles() async {
     try {
+      // Listen for changes in the bookmarks node
       _bookmarksRef.onValue.listen((event) {
         final dynamic data = event.snapshot.value;
         if (data is Map) {
@@ -41,15 +43,29 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                 articleKeys[value['title'] ?? ''] = key;
               }
             });
+            isLoading = false;
+            isOffline = false; // Assume online if data is received
           });
         } else {
           setState(() {
             bookmarkedArticles.clear();
             articleKeys.clear();
+            isLoading = false;
           });
         }
+      }, onError: (error) {
+        // Handle errors, possibly due to being offline
+        setState(() {
+          isLoading = false;
+          isOffline = true;
+        });
+        print('Error loading bookmarks: $error');
       });
     } catch (e) {
+      setState(() {
+        isLoading = false;
+        isOffline = true;
+      });
       print('Error loading bookmarks: $e');
     }
   }
@@ -64,7 +80,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Bookmark removed successfully'),
+            content: const Text('Bookmark removed successfully'),
             backgroundColor: Colors.green,
           ),
         );
@@ -73,7 +89,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
       print('Error removing bookmark: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to remove bookmark'),
+          content: const Text('Failed to remove bookmark'),
           backgroundColor: Colors.red,
         ),
       );
@@ -93,59 +109,77 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         ),
         centerTitle: true,
       ),
-      body: bookmarkedArticles.isEmpty
-          ? const Center(child: Text('No bookmarked articles.'))
-          : Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: Theme.of(context).brightness == Brightness.dark
-                      ? [Colors.grey[850]!, Colors.grey[800]!]
-                      : [const Color(0xFFDCC00A), const Color(0xFF96FF61)],
-                ),
-              ),
-              child: ListView.builder(
-                itemCount: bookmarkedArticles.length,
-                itemBuilder: (context, index) {
-                  final article = bookmarkedArticles[index];
-                  return Card(
-                    margin: const EdgeInsets.all(8),
-                    child: ListTile(
-                      title: Text(
-                        article.title,
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyMedium?.color, // Updated
-                          fontWeight: FontWeight.bold,
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : isOffline && bookmarkedArticles.isEmpty
+              ? const Center(
+                  child: Text(
+                    'No bookmarked articles available offline.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )
+              : bookmarkedArticles.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No bookmarked articles.',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    )
+                  : Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: Theme.of(context).brightness == Brightness.dark
+                              ? [Colors.grey[850]!, Colors.grey[800]!]
+                              : [const Color(0xFFDCC00A), const Color(0xFF96FF61)],
                         ),
                       ),
-                      subtitle: Text(
-                        article.description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium, // Updated
+                      child: ListView.builder(
+                        itemCount: bookmarkedArticles.length,
+                        itemBuilder: (context, index) {
+                          final article = bookmarkedArticles[index];
+                          return Card(
+                            margin: const EdgeInsets.all(8),
+                            child: ListTile(
+                              title: Text(
+                                article.title,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.color, // Updated
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(
+                                article.description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.bodyMedium, // Updated
+                              ),
+                              trailing: IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () => _removeBookmark(article.title),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ArticleDetailScreen(article: article),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
-                      trailing: IconButton(
-                        icon: const Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () => _removeBookmark(article.title),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ArticleDetailScreen(article: article),
-                          ),
-                        );
-                      },
                     ),
-                  );
-                },
-              ),
-            ),
     );
   }
 }

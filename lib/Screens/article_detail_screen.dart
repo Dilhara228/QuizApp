@@ -1,4 +1,3 @@
-// article_detail_screen.dart
 import 'package:flutter/material.dart';
 import '../Models/article.dart';
 
@@ -27,10 +26,9 @@ class ArticleDetailScreen extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 article.description,
-                style: Theme.of(context).textTheme.bodyMedium, // Updated
+                style: Theme.of(context).textTheme.bodyMedium, 
               ),
               const SizedBox(height: 16),
-              // You can add more themed widgets here if needed
               const SizedBox(height: 32),
             ],
           ),
