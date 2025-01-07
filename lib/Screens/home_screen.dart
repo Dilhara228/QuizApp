@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:programming_quiz/Directory/theme_notifier.dart';
+import 'package:provider/provider.dart'; // Added import
 import 'package:programming_quiz/Models/quiz_data.dart';
+import 'package:programming_quiz/Screens/Bookmark_Screen.dart';
+import 'package:programming_quiz/Screens/articles_overview_screen.dart';
 import 'package:programming_quiz/Screens/quiz_screen.dart';
 import 'package:programming_quiz/Screens/select_language_screen.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: HomeScreen(),
-    );
-  }
-}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,13 +19,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    bool isDarkMode = themeNotifier.isDarkMode;
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFDCC00A),
         title: const Text(
           'Programming Quiz',
           style: TextStyle(
-            color: Colors.black,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -45,14 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFDCC00A),
-              Color(0xFF96FF61),
-            ],
+            colors: isDarkMode
+                ? [Colors.grey[850]!, Colors.grey[800]!]
+                : [const Color(0xFFDCC00A), const Color(0xFF96FF61)],
           ),
         ),
         child: SafeArea(
@@ -69,39 +57,50 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFFFFFFFF),
+        backgroundColor: Theme.of(context).cardColor,
         currentIndex: _currentIndex,
         selectedItemColor: Colors.red,
-        unselectedItemColor: Colors.black87,
+        unselectedItemColor: Theme.of(context).iconTheme.color,
         type: BottomNavigationBarType.fixed,
         onTap: (index) {
-          if(index == 1){
+          if (index == 1) {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SelectLanguageScreen()
+                builder: (context) => SelectLanguageScreen(),
               ),
             );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const BookmarkScreen()),
+            );
+          } else if (index == 3) {
+            themeNotifier.toggleTheme(); // Toggle the theme
+          } else {
+            setState(() {
+              _currentIndex = index;
+            });
           }
-          setState(() {
-            _currentIndex = index;
-          });
         },
-        items: const [
-          BottomNavigationBarItem(
+        items: [
+          const BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.article),
             label: 'Articles',
           ),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
             icon: Icon(Icons.bookmark),
             label: 'Bookmarks',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.dark_mode),
+            icon: Icon(
+              Icons.dark_mode,
+              color: isDarkMode ? Colors.red : Colors.black87,
+            ),
             label: 'Dark Mode',
           ),
         ],
@@ -129,13 +128,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 16.0),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(12),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
-              color: Colors.black26,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black54
+                  : Colors.black26,
               blurRadius: 5,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -146,9 +147,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               width: 100,
               height: 100,
-              decoration: const BoxDecoration(
-                color: Color(0xFFEEEEEE),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey[700]
+                    : const Color(0xFFEEEEEE),
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(12),
                   bottomLeft: Radius.circular(12),
                 ),
@@ -169,8 +172,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Text(
                   languageName,
-                  style: const TextStyle(
-                    color: Colors.black,
+                  style: TextStyle(
+                    color: Theme.of(context).textTheme.bodyMedium?.color, // Updated
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
